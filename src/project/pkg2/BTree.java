@@ -12,7 +12,7 @@ package project.pkg2;
 
 public class BTree {
     //Degree of BTree
-    int t;
+    private int t;
     
     private int ids[];
     private int pos = 0;
@@ -28,7 +28,7 @@ public class BTree {
     public void add(TrackingDevice device) {
         // Tree is Empty, then add a new elemet to root
         if (root == null) {
-            root = new BTreeNode(t, true);
+            root = new BTreeNode(true);
             root.keys[0] = device;
             root.n++;
         }
@@ -42,13 +42,13 @@ public class BTree {
             * Try to insert the device to the root
             */
             if (root.n == 2 * t - 1) {
-                BTreeNode ch = new BTreeNode(t, false);
+                BTreeNode ch = new BTreeNode(false);
                 ch.child[0] = root;
                 root = ch;
-                root.splitChild(0, root, t);
-                root.insert(device, t);
+                root.splitChild(0, root);
+                root.insert(device);
             } else {
-                root.insert(device, t);
+                root.insert(device);
             }
         }
     }
@@ -81,7 +81,7 @@ public class BTree {
         boolean isLeaf;
 
         // Constructor
-        BTreeNode(int t, boolean leaf) {
+        BTreeNode(boolean leaf) {
             keys = new TrackingDevice[2 * t - 1];
             child = new BTreeNode[2 * t];
             isLeaf = leaf;
@@ -105,7 +105,7 @@ public class BTree {
         * the insert method won't be accessed until the node
         * that called it is not full of elemets
         */
-        private void insert(TrackingDevice device, int t) {
+        private void insert(TrackingDevice device) {
             if (isLeaf) {
                 int x = n;
                 // move elemtns by one position until the device 
@@ -132,24 +132,24 @@ public class BTree {
                 {
                     //split child in poition x and add middle value to parent [this]
                     // parent won't be full !!!!
-                    splitChild(x, this, t);
+                    splitChild(x, this);
                     
                     //try to insert device to parent again to check the right position for device
-                    this.insert(device, t);
+                    this.insert(device);
                     
                 } else {
-                    child[x].insert(device, t);
+                    child[x].insert(device);
                 }
             }
         }
 
-        private void splitChild(int ce, BTreeNode parent, int t) {
+        private void splitChild(int childPos, BTreeNode parent) {
             // middle position in the full child
-            int mid = parent.child[ce].n / 2;
+            int mid = parent.child[childPos].n / 2;
             
             int x = parent.n;
             //move all keys after the position of new elemtn from child by one position
-            while (x > ce) {
+            while (x > childPos) {
                     parent.keys[x] = parent.keys[x - 1];
                     //the bug was here 
                     parent.child[x+1] = parent.child[x];
@@ -157,31 +157,31 @@ public class BTree {
             }
             
             //put middle elemtn of child in parent
-            parent.keys[x] = parent.child[ce].keys[mid];
+            parent.keys[x] = parent.child[childPos].keys[mid];
             
             //free the middle element
-            parent.child[ce].keys[mid] = null;
+            parent.child[childPos].keys[mid] = null;
             
-            int tempChildN = parent.child[ce].n;
-            parent.child[ce].n--;
+            int tempChildN = parent.child[childPos].n;
+            parent.child[childPos].n--;
             parent.n++;
             
             //new node contains keys and children after middle in child
-            BTreeNode nbtn = new BTreeNode(t, true);
+            BTreeNode nbtn = new BTreeNode(true);
             
             int i = 0;
             while (mid < tempChildN - 1) { 
-                    nbtn.child[i] = child[ce].child[++mid];
-                    nbtn.keys[i++] = child[ce].keys[mid];
-                    parent.child[ce].n--;
-                    parent.child[ce].keys[mid] = null;
+                    nbtn.child[i] = child[childPos].child[++mid];
+                    nbtn.keys[i++] = child[childPos].keys[mid];
+                    parent.child[childPos].n--;
+                    parent.child[childPos].keys[mid] = null;
             }
             
             //add last child to new node
-            nbtn.child[i] = child[ce].child[++mid];
+            nbtn.child[i] = child[childPos].child[++mid];
             nbtn.n = i;
-            parent.child[ce + 1] = nbtn;
-            if (child[ce].isLeaf != false) {
+            parent.child[childPos + 1] = nbtn;
+            if (child[childPos].isLeaf) {
                     nbtn.isLeaf = true;
             } else {
                     nbtn.isLeaf = false;
