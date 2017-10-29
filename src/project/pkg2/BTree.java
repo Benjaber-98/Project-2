@@ -5,8 +5,6 @@
  */
 package project.pkg2;
 
-import java.util.ArrayList;
-
 /**
  *
  * @author Mahmoud
@@ -24,7 +22,7 @@ public class BTree {
     }
 
     public void add(TrackingDevice device) {
-        // Tree is Empty
+        // Tree is Empty, then add a new elemet to root
         if (root == null) {
             root = new BTreeNode(t, true);
             root.keys[0] = device;
@@ -32,12 +30,18 @@ public class BTree {
         }
         // Tree is Not Empty
         else {
-            // The root Node is full
+            /*
+            * The root is Full
+            * create a new node and add the root as it's first child
+            * make the new node as a root
+            * split the first child which was the root !
+            * Try to insert the device to the root
+            */
             if (root.n == 2 * t - 1) {
                 BTreeNode ch = new BTreeNode(t, false);
                 ch.child[0] = root;
                 root = ch;
-                ch.splitChild(0, root, t);
+                root.splitChild(0, root, t);
                 root.insert(device, t);
             } else {
                 root.insert(device, t);
@@ -49,17 +53,27 @@ public class BTree {
         return root.search(id);
     }
 
+    /*
+    * This class is responsible for creating and splitting nodes 
+    * and also for traversing in btree elements
+    */
     class BTreeNode {
+        //the Array of Tracking Device Elements
         TrackingDevice[] keys;
+        
+        //Children Nodes of each node in the BTree
         BTreeNode[] child;
+        
+        //Number of keys in the Node
         int n;
-        boolean leaf;
+        
+        boolean isLeaf;
 
         // Constructor
-        BTreeNode(int t, boolean l) {
+        BTreeNode(int t, boolean leaf) {
             keys = new TrackingDevice[2 * t - 1];
             child = new BTreeNode[2 * t];
-            leaf = l;
+            isLeaf = leaf;
             n = 0;
         }
 
@@ -71,25 +85,36 @@ public class BTree {
             }
             if (i < n && keys[i].getId() == id)
                 return this.keys[i];
-            if (leaf == true)
+            if (isLeaf == true)
                 return null;
-            //System.out.println(i);
             return child[i].search(id);
         }
 
+        /*
+        * the insert method won't be accessed until the node
+        * that called it is not full of elemets
+        */
         private void insert(TrackingDevice device, int t) {
-            if (leaf) {
+            if (isLeaf) {
                 int x = n;
+                // move elemtns by one position until the device 
+                // is not smaller than keys
                 while (x > 0 && keys[x - 1].getId() > device.getId()) {
-                        keys[x] = keys[--x];
+                        this.keys[x] = this.keys[--x];
                 }
+                // Add device in its right position
                 this.keys[x] = device;
                 n++;
+                
             } else {
                 int x = 0;
-                while (x < n && keys[x].getId() < device.getId())
+                /*
+                * Keep adding 1 to x until we found the index of child
+                * which is larger than the device
+                */
+                while (x < n && this.keys[x].getId() < device.getId())
                     x++;
-                if (child[x].n == (2 * t - 1))// Child is full
+                if (this.child[x].n == (2 * t - 1))// Child is full
                 {
                     splitChild(x, this, t);
                     int i = x;//i=1
@@ -97,8 +122,8 @@ public class BTree {
                     if (this.child[x].keys[m].getId() < device.getId())
                             i++;
                     this.insert(device, t);
-                    // if(child[x].leaf==true)
-                    // child[x+1].leaf=true;
+                    // if(child[x].isLeaf==true)
+                    // child[x+1].isLeaf=true;
                 } else {
                     child[x].insert(device, t);
                 }
@@ -119,20 +144,19 @@ public class BTree {
             parent.n++;//n=2
             BTreeNode nbtn = new BTreeNode(t, true);
             int i = 0;
-            // int j = mid;
-            while (mid < tempChildN - 1) { // mid = 2
+            while (mid < tempChildN - 1) { 
                     nbtn.child[i] = child[ce].child[++mid];
                     nbtn.keys[i++] = child[ce].keys[mid];
                     parent.child[ce].n--;//n=2
                     parent.child[ce].keys[mid] = null;
             }
             nbtn.child[i] = child[ce].child[++mid];
-            nbtn.n = i;//i=3
+            nbtn.n = i;
             parent.child[ce + 1] = nbtn;
-            if (child[ce].leaf != false) {
-                    nbtn.leaf = true;
+            if (child[ce].isLeaf != false) {
+                    nbtn.isLeaf = true;
             } else {
-                    nbtn.leaf = false;
+                    nbtn.isLeaf = false;
             }
         }
     }
