@@ -14,11 +14,15 @@ public class BTree {
     //Degree of BTree
     int t;
     
+    private int ids[];
+    private int pos = 0;
+    
     BTreeNode root;
 
     BTree(int t) {
         this.t = t;
         root = null;
+        ids = new int[100];
     }
 
     public void add(TrackingDevice device) {
@@ -52,6 +56,13 @@ public class BTree {
     public TrackingDevice get(int id) {
         return root.search(id);
     }
+    
+    public int[] getKeys() {
+        root.travers();
+        pos = 0;
+        return ids;
+    }
+    
 
     /*
     * This class is responsible for creating and splitting nodes 
@@ -175,6 +186,27 @@ public class BTree {
             } else {
                     nbtn.isLeaf = false;
             }
+        }
+        
+        private void travers() {
+            
+            int i;
+            //loop through every child in this node
+            for(i = 0; i < this.n; i++) {
+                //if this node has children, loop through each one
+                if(! this.isLeaf) {
+                    this.child[i].travers();
+                }
+                //add 
+                ids[pos++] = this.keys[i].getId();
+            }
+            
+            //if this node has children traverse through the last child
+            if(this.isLeaf == false) {
+                this.child[i].travers();
+            }
+            
+            
         }
     }
 }

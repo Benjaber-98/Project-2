@@ -192,18 +192,16 @@ public class Project2 {
         endTime = System.currentTimeMillis();
         long btreeRangeSearchTime = endTime - startTime;
         
-//        System.out.println("Ids in ascending order : ");
-//        startTime = System.currentTimeMillis();
-//        {
-//            Integer sorted[] = new Integer[100];
-//            System.arraycopy(btree.getKeys(), 0, sorted, 0, 100);
-//            Arrays.sort(sorted);
-//            for(int i = 0; i < 100; i++) {
-//                System.out.println(sorted[i]);
-//            }
-//        }
-//        endTime = System.currentTimeMillis();
-//        long btreeSortingTime = endTime - startTime;
+        System.out.println("Ids in ascending order : ");
+        startTime = System.currentTimeMillis();
+        {
+            int sorted[] = btree.getKeys();
+            for(int i = 0; i < sorted.length; i++) {
+                System.out.println(sorted[i]);
+            }
+        }
+        endTime = System.currentTimeMillis();
+        long btreeSortingTime = endTime - startTime;
 
         
         System.out.println("------------ End The BTree ------------");
@@ -233,8 +231,8 @@ public class Project2 {
         System.out.println("Adding time : " + btreeAddingTime + "ms");
         System.out.println("Searching time : " + btreeGetTime + "ms");
         System.out.println("Searching in range time : " + btreeRangeSearchTime + "ms");
-//        System.out.println("Sorting time : " + btreeSortingTime + "ms");
-        System.out.println("Average time for all operations : " + ((btreeAddingTime + btreeGetTime + btreeRangeSearchTime ) / 3) + "ms");
+        System.out.println("Sorting time : " + btreeSortingTime + "ms");
+        System.out.println("Average time for all operations : " + ((btreeAddingTime + btreeGetTime + btreeRangeSearchTime + btreeSortingTime ) / 4) + "ms");
 
 //        BTree b = new BTree(3);
 //        int w[] = new int[100];
