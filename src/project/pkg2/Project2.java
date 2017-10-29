@@ -161,37 +161,37 @@ public class Project2 {
         System.out.println("------------ Start The BTree ------------");
         
         
-//        BTree btree = new BTree(3);
-//        
-//        startTime = System.currentTimeMillis();
-//        for(int i = 0; i < 100; i++) {
-//            btree.add(device[i]);
-//        }
-//        endTime = System.currentTimeMillis();
-//        long btreeAddingTime = endTime - startTime;
-//        
-//        startTime = System.currentTimeMillis();
-//        for(int i = 0; i < 100; i++) {
-//            if(btree.get(ids[i]) != null) {
-//                System.out.println("Device with ID " + ids[i] + " is Found !");
-//            } else {
-//                System.out.println("Device with ID " + ids[i] + " isn't Found !");
-//            }
-//        }
-//        endTime = System.currentTimeMillis();
-//        long btreeGetTime = endTime - startTime;
-//        
-//        System.out.println("Devices in range from " + start + " to " + end);
-//        startTime = System.currentTimeMillis();
-//        for(Integer i = start; i <= end; i++) {
-//            TrackingDevice d = hashTable.get(i);
-//            if(d != null) {
-//                System.out.println("Device with ID " + d.getId() + " is Found!");
-//            }
-//        }
-//        endTime = System.currentTimeMillis();
-//        long btreeRangeSearchTime = endTime - startTime;
-//        
+        BTree btree = new BTree(3);
+        
+        startTime = System.currentTimeMillis();
+        for(int i = 0; i < 100; i++) {
+            btree.add(device[i]);
+        }
+        endTime = System.currentTimeMillis();
+        long btreeAddingTime = endTime - startTime;
+        
+        startTime = System.currentTimeMillis();
+        for(int i = 0; i < 100; i++) {
+            if(btree.get(ids[i]) != null) {
+                System.out.println("Device with ID " + ids[i] + " is Found !");
+            } else {
+                System.out.println("Device with ID " + ids[i] + " isn't Found !");
+            }
+        }
+        endTime = System.currentTimeMillis();
+        long btreeGetTime = endTime - startTime;
+        
+        System.out.println("Devices in range from " + start + " to " + end);
+        startTime = System.currentTimeMillis();
+        for(Integer i = start; i <= end; i++) {
+            TrackingDevice d = hashTable.get(i);
+            if(d != null) {
+                System.out.println("Device with ID " + d.getId() + " is Found!");
+            }
+        }
+        endTime = System.currentTimeMillis();
+        long btreeRangeSearchTime = endTime - startTime;
+        
 //        System.out.println("Ids in ascending order : ");
 //        startTime = System.currentTimeMillis();
 //        {
@@ -230,27 +230,27 @@ public class Project2 {
         
         System.out.println("------- BTree ------");
         
-//        System.out.println("Adding time : " + btreeAddingTime + "ms");
-//        System.out.println("Searching time : " + btreeGetTime + "ms");
-//        System.out.println("Searching in range time : " + btreeRangeSearchTime + "ms");
+        System.out.println("Adding time : " + btreeAddingTime + "ms");
+        System.out.println("Searching time : " + btreeGetTime + "ms");
+        System.out.println("Searching in range time : " + btreeRangeSearchTime + "ms");
 //        System.out.println("Sorting time : " + btreeSortingTime + "ms");
-//        System.out.println("Average time for all operations : " + ((btreeAddingTime + btreeGetTime + btreeRangeSearchTime ) / 3) + "ms");
+        System.out.println("Average time for all operations : " + ((btreeAddingTime + btreeGetTime + btreeRangeSearchTime ) / 3) + "ms");
 
-        BTree b = new BTree(3);
-        int w[] = new int[100];
-        for(int i = 0; i < 100; i++) {
-            b.add(device[i]);
-            w[i] = device[i].getId();
-            
-        }
-        
+//        BTree b = new BTree(3);
+//        int w[] = new int[100];
+//        for(int i = 0; i < 100; i++) {
+//            b.add(device[i]);
+//            w[i] = device[i].getId();
+//            
+//        }
+//        
 //        System.out.println("---------------");
 //        
-//        for(int i = 0; i < 15; i++) {
+//        for(int i = 0; i < 100; i++) {
 //            if(b.get(w[i]) == null) {
-//                System.out.println(w[i] + " Not Found");
+//                System.out.println(i + " - " + w[i] + " Not Found");
 //            }
-//            else System.out.println(w[i] + " Found");
+//            else System.out.println(i + " - " + w[i] + " Found");
 //        }
         
         

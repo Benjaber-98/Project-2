@@ -100,7 +100,8 @@ public class BTree {
                 // move elemtns by one position until the device 
                 // is not smaller than keys
                 while (x > 0 && keys[x - 1].getId() > device.getId()) {
-                        this.keys[x] = this.keys[--x];
+                        this.keys[x] = this.keys[x - 1];
+                        x--;
                 }
                 // Add device in its right position
                 this.keys[x] = device;
@@ -114,16 +115,17 @@ public class BTree {
                 */
                 while (x < n && this.keys[x].getId() < device.getId())
                     x++;
-                if (this.child[x].n == (2 * t - 1))// Child is full
+                
+                // Child is full
+                if (this.child[x].n == (2 * t - 1))
                 {
+                    //split child in poition x and add middle value to parent [this]
+                    // parent won't be full !!!!
                     splitChild(x, this, t);
-                    int i = x;//i=1
-                    int m = this.child[x].n - 1;//m=1
-                    if (this.child[x].keys[m].getId() < device.getId())
-                            i++;
+                    
+                    //try to insert device to parent again to check the right position for device
                     this.insert(device, t);
-                    // if(child[x].isLeaf==true)
-                    // child[x+1].isLeaf=true;
+                    
                 } else {
                     child[x].insert(device, t);
                 }
@@ -131,25 +133,40 @@ public class BTree {
         }
 
         private void splitChild(int ce, BTreeNode parent, int t) {
-            int mid = (parent.child[ce].n / 2);
+            // middle position in the full child
+            int mid = parent.child[ce].n / 2;
+            
             int x = parent.n;
+            //move all keys after the position of new elemtn from child by one position
             while (x > ce) {
                     parent.keys[x] = parent.keys[x - 1];
+                    //the bug was here 
+                    parent.child[x+1] = parent.child[x];
                     x--;
             }
+            
+            //put middle elemtn of child in parent
             parent.keys[x] = parent.child[ce].keys[mid];
+            
+            //free the middle element
             parent.child[ce].keys[mid] = null;
+            
             int tempChildN = parent.child[ce].n;
-            parent.child[ce].n--;//n=4
-            parent.n++;//n=2
+            parent.child[ce].n--;
+            parent.n++;
+            
+            //new node contains keys and children after middle in child
             BTreeNode nbtn = new BTreeNode(t, true);
+            
             int i = 0;
             while (mid < tempChildN - 1) { 
                     nbtn.child[i] = child[ce].child[++mid];
                     nbtn.keys[i++] = child[ce].keys[mid];
-                    parent.child[ce].n--;//n=2
+                    parent.child[ce].n--;
                     parent.child[ce].keys[mid] = null;
             }
+            
+            //add last child to new node
             nbtn.child[i] = child[ce].child[++mid];
             nbtn.n = i;
             parent.child[ce + 1] = nbtn;
