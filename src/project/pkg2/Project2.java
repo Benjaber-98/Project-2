@@ -237,21 +237,21 @@ public class Project2 {
 //        System.out.println("Average time for all operations : " + ((btreeAddingTime + btreeGetTime + btreeRangeSearchTime ) / 3) + "ms");
 
         BTree b = new BTree(3);
-        int w[] = new int[15];
-        for(int i = 0; i < 15; i++) {
+        int w[] = new int[100];
+        for(int i = 0; i < 100; i++) {
             b.add(device[i]);
             w[i] = device[i].getId();
             
         }
         
-        System.out.println("---------------");
-        
-        for(int i = 0; i < 15; i++) {
-            if(b.get(w[i]) == null) {
-                System.out.println(w[i] + " Not Found");
-            }
-            else System.out.println(w[i] + " Found");
-        }
+//        System.out.println("---------------");
+//        
+//        for(int i = 0; i < 15; i++) {
+//            if(b.get(w[i]) == null) {
+//                System.out.println(w[i] + " Not Found");
+//            }
+//            else System.out.println(w[i] + " Found");
+//        }
         
         
     }
