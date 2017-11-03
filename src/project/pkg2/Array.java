@@ -13,7 +13,7 @@ package project.pkg2;
 public class Array {
     
     private TrackingDevice[] devices;
-    int conditions = 0, loops = 0;
+    int searchingLoops = 0, getKeysLoops = 0;
     
     private int pos = 0;
     
@@ -23,7 +23,6 @@ public class Array {
     
     public boolean add(TrackingDevice device){
         if(pos >= 100 || pos < 0) {
-            conditions++;
             return false;
         }
         devices[pos++] = device;
@@ -33,9 +32,8 @@ public class Array {
     public TrackingDevice get(Integer id) {
         
         for(TrackingDevice t: devices) {
-            loops++;
+            searchingLoops++;
             if(id.equals(t.getId())) {
-                conditions++;
                 return t;
             }
         }
@@ -46,8 +44,8 @@ public class Array {
     public Integer[] getIds(){
         Integer[] ids = new Integer[100];
         for(int i = 0; i< 100; i++) {
-            ids[i] = devices[i].getId(); 
-            loops++;
+            getKeysLoops++;
+            ids[i] = devices[i].getId();
         }
         return ids;
     }

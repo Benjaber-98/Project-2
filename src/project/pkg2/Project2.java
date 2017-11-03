@@ -7,10 +7,8 @@ package project.pkg2;
 
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.Random;
 import java.util.Scanner;
-import java.util.Set;
 
 /**
  *
@@ -213,8 +211,8 @@ public class Project2 {
         System.out.println("Searching in range time : " + arrayRangeSearchTime + "ms");
         System.out.println("Sorting time : " + arraySortingTime + "ms");
         System.out.println("Average time for all operations : " + ((arrayAddingTime + arrayGetTime + arrayRangeSearchTime + arraySortingTime) / 4) + "ms");
-        System.out.println("Number of Conditions : " + array.conditions);
-        System.out.println("Number of Loops : " + array.loops);
+        System.out.println("Number of Loops while Searching : " + array.searchingLoops);
+        System.out.println("Number of Loops while getting all keys : " + array.getKeysLoops);
         
         System.out.println("------- HashTable ------");
         
@@ -223,8 +221,8 @@ public class Project2 {
         System.out.println("Searching in range time : " + hashTableRangeSearchTime + "ms");
         System.out.println("Sorting time : " + hashTableSortingTime + "ms");
         System.out.println("Average time for all operations : " + ((hashTableAddingTime + hashTableGetTime + hashTableRangeSearchTime + hashTableSortingTime) / 4) + "ms");
-        System.out.println("Number of Conditions : " + hashTable.conditions);
-        System.out.println("Number of Loops : " + hashTable.loops);
+        System.out.println("Number of Loops while Searching : " + hashTable.searchingLoops);
+        System.out.println("Number of Loops while getting all keys : " + hashTable.getKeysLoops);
         
         System.out.println("------- BTree ------");
         
@@ -233,23 +231,27 @@ public class Project2 {
         System.out.println("Searching in range time : " + btreeRangeSearchTime + "ms");
         System.out.println("Sorting time : " + btreeSortingTime + "ms");
         System.out.println("Average time for all operations : " + ((btreeAddingTime + btreeGetTime + btreeRangeSearchTime + btreeSortingTime ) / 4) + "ms");
+        System.out.println("Number of Loops while Adding : " + btree.addDevicesLoops);
+        System.out.println("Number of Loops while Searching : " + btree.searchingLoops);
+        System.out.println("Number of Loops while getting all keys : " + btree.getKeysLoops);
 
-        BTree b = new BTree(3);
-        int w[] = new int[100];
-        for(int i = 0; i < 100; i++) {
-            b.add(device[i]);
-            w[i] = device[i].getId();
-            
-        }
         
-        System.out.println("---------------");
-        
-        for(int i = 0; i < 100; i++) {
-            if(b.get(w[i]) == null) {
-                System.out.println(i + " - " + w[i] + " Not Found");
-            }
-            else System.out.println(i + " - " + w[i] + " Found");
-        }
+//        BTree b = new BTree(3);
+//        int w[] = new int[100];
+//        for(int i = 0; i < 100; i++) {
+//            b.add(device[i]);
+//            w[i] = device[i].getId();
+//            
+//        }
+//        
+//        System.out.println("---------------");
+//        
+//        for(int i = 0; i < 100; i++) {
+//            if(b.get(w[i]) == null) {
+//                System.out.println(i + " - " + w[i] + " Not Found");
+//            }
+//            else System.out.println(i + " - " + w[i] + " Found");
+//        }
         
         
     }

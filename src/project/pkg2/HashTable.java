@@ -15,7 +15,7 @@ public class HashTable {
     
     private int size = 100;
     private LinkedList<TrackingDevice>[] devices = new LinkedList[size]; 
-    public int conditions = 0, loops = 0;
+    public int searchingLoops = 0, getKeysLoops = 0;
     
     
     
@@ -34,9 +34,8 @@ public class HashTable {
         if(devices[pos] == null) return null;
         
         for(TrackingDevice t : devices[pos]) {
-            loops++;
+            searchingLoops++;
             if(t.getId() == id) {
-                conditions++;
                 return t;
             }
         }
@@ -44,14 +43,16 @@ public class HashTable {
         return null;
     }
     
-    private int hashId(int num) {
-        long hash = 3L;
-        String id = String.valueOf(num);
-        for (int i = 0; i < id.length(); i++) {
-            hash = hash*id.charAt(i) + 3;
-        }
+    private int hashId(Integer num) {
         
-        return (int)(hash % (int)size);
+        int code = num.hashCode();
+//        long hash = 3L;
+//        String id = String.valueOf(num);
+//        for (int i = 0; i < id.length(); i++) {
+//            hash = hash*id.charAt(i) + 3;
+//        }
+        
+        return (int)(code % (int)size);
     }
     
     public Integer[] getKeys() {
@@ -60,13 +61,12 @@ public class HashTable {
         for(LinkedList<TrackingDevice> l : devices) {
             if(l == null) continue;
             for(TrackingDevice t : l ) {
-                loops++;
+                getKeysLoops++;
                 keys[pos++] = t.getId();
             }
         }
         
         return keys;
     }
-    
     
 }
