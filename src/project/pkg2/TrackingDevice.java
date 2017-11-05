@@ -45,6 +45,10 @@ public class TrackingDevice {
     public int getId() {
         return id;
     }
+    
+    public void setId(int id) {
+        this.id = id;
+    }
 
     /**
      * Generating a random 13 digits id for each object 

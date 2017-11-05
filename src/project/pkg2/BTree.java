@@ -22,7 +22,7 @@ public class BTree {
     
     BTreeNode root;
 
-    BTree(int t) {
+    public BTree(int t) {
         this.t = t;
         root = null;
         ids = new int[100];
@@ -114,10 +114,16 @@ public class BTree {
                 int x = n;
                 // move elemtns by one position until the device 
                 // is not smaller than keys
-                while (x > 0 && keys[x - 1].getId() > device.getId()) {
+                while (x > 0 && keys[x - 1].getId() >= device.getId()) {
                     addDevicesLoops++;
-                        this.keys[x] = this.keys[x - 1];
-                        x--;
+                    
+                    //update the element if we found it by id
+                    if(keys[x - 1].getId() == device.getId()) {
+                        this.keys[x - 1] = device;
+                        return;
+                    }
+                    this.keys[x] = this.keys[x - 1];
+                    x--;
                 }
                 // Add device in its right position
                 this.keys[x] = device;

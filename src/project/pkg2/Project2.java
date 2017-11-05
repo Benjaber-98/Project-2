@@ -236,22 +236,23 @@ public class Project2 {
         System.out.println("Number of Loops while getting all keys : " + btree.getKeysLoops);
 
         
-//        BTree b = new BTree(3);
-//        int w[] = new int[100];
-//        for(int i = 0; i < 100; i++) {
-//            b.add(device[i]);
-//            w[i] = device[i].getId();
-//            
-//        }
-//        
-//        System.out.println("---------------");
-//        
-//        for(int i = 0; i < 100; i++) {
-//            if(b.get(w[i]) == null) {
-//                System.out.println(i + " - " + w[i] + " Not Found");
-//            }
-//            else System.out.println(i + " - " + w[i] + " Found");
-//        }
+        BTree b = new BTree(3);
+        device[0].setId(10);
+        device[1].setId(10);
+        int w[] = new int[100];
+        for(int i = 0; i < 5; i++) {
+            b.add(device[i]);
+            w[i] = device[i].getId();
+        }
+        
+        System.out.println("---------------");
+        
+        for(int i = 0; i < 5; i++) {
+            if(b.get(w[i]) == null) {
+                System.out.println(i + " - " + w[i] + " Not Found");
+            }
+            else System.out.println(i + " - " + w[i] + " Found");
+        }
         
         
     }
