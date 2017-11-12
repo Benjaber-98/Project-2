@@ -5,6 +5,8 @@
  */
 package project.pkg2;
 
+import java.util.ArrayList;
+
 /**
  *
  * @author Mahmoud
@@ -12,12 +14,12 @@ package project.pkg2;
 
 public class BTree {
     
-    public int searchingLoops = 0, getKeysLoops = 0, addDevicesLoops = 0;
+    public int searchingLoops = 0, maxLoops = 0;
     
     private int t;
     
     //ids of all devices
-    private int ids[];
+    private ArrayList<Integer> ids;
     private int pos = 0;
     
     BTreeNode root;
@@ -25,7 +27,7 @@ public class BTree {
     public BTree(int t) {
         this.t = t;
         root = null;
-        ids = new int[100];
+        ids = new ArrayList<>();
     }
 
     public void add(TrackingDevice device) {
@@ -57,13 +59,14 @@ public class BTree {
     }
 
     public TrackingDevice get(int id) {
+        searchingLoops = 0;
         return root.search(id);
     }
     
-    public int[] getKeys() {
+    public Integer[] getKeys() {
         root.travers();
         pos = 0;
-        return ids;
+        return ids.toArray(new Integer[0]);
     }
     
 
@@ -93,16 +96,46 @@ public class BTree {
 
         private TrackingDevice search(int id) {
             int i = 0;
-            for (i = 0; i < n; i++) {
+//            for (i = 0; i < n; i++) {
+//                searchingLoops++;
+//                if(searchingLoops > maxLoops) {
+//                    maxLoops = searchingLoops;
+//                }
+//                if (keys[i].getId() >= id)
+//                        break;
+//            }
+/*
+            int start = 0, end = this.n - 1, mid;
+            
+            //Apply binary search on node
+            while(start <= end) {
                 searchingLoops++;
-                if (keys[i].getId() >= id)
-                        break;
+                
+                if(searchingLoops > maxLoops) maxLoops = searchingLoops;
+                
+                /*
+                * First key in iteration is greater than id 
+                * means we have to move to to next child of that key
+                
+                if(this.keys[start].getId() > id && !this.isLeaf) {
+                    return this.child[start].search(id);
+                }
+                // last elemtnt less than id, move to node after end
+                else if( this.keys[end].getId() < id && !this.isLeaf) {
+                    return this.child[end+1].search(id);
+                }
+                
+                mid = (start + end) / 2;
+                if(keys[mid].getId() == id) {
+                    return this.keys[mid];
+                }
+                
+                if(id > this.keys[mid].getId()) { start = mid + 1; }
+                else { end = mid - 1; }
             }
-            if (i < n && keys[i].getId() == id)
-                return this.keys[i];
-            if (isLeaf == true)
-                return null;
-            return child[i].search(id);
+            return null;
+            */
+            return null;
         }
 
         /*
@@ -115,7 +148,6 @@ public class BTree {
                 // move elemtns by one position until the device 
                 // is not smaller than keys
                 while (x > 0 && keys[x - 1].getId() >= device.getId()) {
-                    addDevicesLoops++;
                     
                     //update the element if we found it by id
                     if(keys[x - 1].getId() == device.getId()) {
@@ -137,7 +169,6 @@ public class BTree {
                 */
                 while (x < n && this.keys[x].getId() < device.getId()) {
                     x++;
-                    addDevicesLoops++;
                 }
                 
                 // Child is full
@@ -163,7 +194,6 @@ public class BTree {
             int x = parent.n;
             //move all keys after the position of new elemtn from child by one position
             while (x > childPos) {
-                addDevicesLoops++;
                 parent.keys[x] = parent.keys[x - 1];
                 //the bug was here 
                 parent.child[x+1] = parent.child[x];
@@ -185,7 +215,6 @@ public class BTree {
             
             int i = 0;
             while (mid < tempChildN - 1) { 
-                addDevicesLoops++;
                 nbtn.child[i] = child[childPos].child[++mid];
                 nbtn.keys[i++] = child[childPos].keys[mid];
                 parent.child[childPos].n--;
@@ -208,13 +237,12 @@ public class BTree {
             int i;
             //loop through every child in this node
             for(i = 0; i < this.n; i++) {
-                getKeysLoops++;
                 //if this node has children, loop through each one
                 if(! this.isLeaf) {
                     this.child[i].travers();
                 }
                 //add 
-                ids[pos++] = this.keys[i].getId();
+                ids.add(this.keys[i].getId());
             }
             
             //if this node has children traverse through the last child

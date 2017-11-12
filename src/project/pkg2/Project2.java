@@ -37,8 +37,8 @@ public class Project2 {
         */
         
         Integer ids[] = new Integer[100];
-        Integer x[] = new Integer[30];
-        for(int i = 0; i < 30; i++) {
+        Integer x[] = new Integer[100];
+        for(int i = 0; i < 100; i++) {
             x[i] = device[i].getId();
         }
 
@@ -106,7 +106,7 @@ public class Project2 {
         
         System.out.println("------------ End The Array ------------");
         
-        System.out.println("------------ Start The BTree ------------");
+        System.out.println("------------ Start The HashTable ------------");
         
         
         HashTable hashTable = new HashTable();
@@ -193,7 +193,7 @@ public class Project2 {
         System.out.println("Ids in ascending order : ");
         startTime = System.currentTimeMillis();
         {
-            int sorted[] = btree.getKeys();
+            Integer sorted[] = btree.getKeys();
             for(int i = 0; i < sorted.length; i++) {
                 System.out.println(sorted[i]);
             }
@@ -211,8 +211,8 @@ public class Project2 {
         System.out.println("Searching in range time : " + arrayRangeSearchTime + "ms");
         System.out.println("Sorting time : " + arraySortingTime + "ms");
         System.out.println("Average time for all operations : " + ((arrayAddingTime + arrayGetTime + arrayRangeSearchTime + arraySortingTime) / 4) + "ms");
-        System.out.println("Number of Loops while Searching : " + array.searchingLoops);
-        System.out.println("Number of Loops while getting all keys : " + array.getKeysLoops);
+        System.out.println("Max Number of Loops in searching : " + array.maxLoops);
+
         
         System.out.println("------- HashTable ------");
         
@@ -221,8 +221,7 @@ public class Project2 {
         System.out.println("Searching in range time : " + hashTableRangeSearchTime + "ms");
         System.out.println("Sorting time : " + hashTableSortingTime + "ms");
         System.out.println("Average time for all operations : " + ((hashTableAddingTime + hashTableGetTime + hashTableRangeSearchTime + hashTableSortingTime) / 4) + "ms");
-        System.out.println("Number of Loops while Searching : " + hashTable.searchingLoops);
-        System.out.println("Number of Loops while getting all keys : " + hashTable.getKeysLoops);
+        System.out.println("Max Number of Loops in searching : " + hashTable.maxLoops);
         
         System.out.println("------- BTree ------");
         
@@ -231,28 +230,32 @@ public class Project2 {
         System.out.println("Searching in range time : " + btreeRangeSearchTime + "ms");
         System.out.println("Sorting time : " + btreeSortingTime + "ms");
         System.out.println("Average time for all operations : " + ((btreeAddingTime + btreeGetTime + btreeRangeSearchTime + btreeSortingTime ) / 4) + "ms");
-        System.out.println("Number of Loops while Adding : " + btree.addDevicesLoops);
+//        System.out.println("Number of Loops while Adding : " + btree.addDevicesLoops);
         System.out.println("Number of Loops while Searching : " + btree.searchingLoops);
-        System.out.println("Number of Loops while getting all keys : " + btree.getKeysLoops);
+//        System.out.println("Number of Loops while getting all keys : " + btree.getKeysLoops);
 
         
+        TrackingDevice d[] = new TrackingDevice[10000];
+        for(int i = 0; i < d.length; i++) {
+            d[i] = new TrackingDevice();
+        }
         BTree b = new BTree(3);
-        device[0].setId(10);
-        device[1].setId(10);
-        int w[] = new int[100];
-        for(int i = 0; i < 5; i++) {
-            b.add(device[i]);
-            w[i] = device[i].getId();
+        int w[] = new int[d.length];
+        for(int i = 0; i < d.length; i++) {
+            b.add(d[i]);
+            w[i] = d[i].getId();
         }
         
         System.out.println("---------------");
         
-        for(int i = 0; i < 5; i++) {
-            if(b.get(w[i]) == null) {
-                System.out.println(i + " - " + w[i] + " Not Found");
-            }
-            else System.out.println(i + " - " + w[i] + " Found");
+        for(int i = 0; i < d.length; i++) {
+            b.get(w[i]);
         }
+        
+        Integer[] y = b.getKeys();
+        System.out.println(y.length);
+        
+        System.out.println("Max Loops : " + b.maxLoops);
         
         
     }

@@ -15,7 +15,7 @@ public class HashTable {
     
     private int size = 100;
     private LinkedList<TrackingDevice>[] devices = new LinkedList[size]; 
-    public int searchingLoops = 0, getKeysLoops = 0;
+    public int searchingLoops = 0, maxLoops = 0;
     
     
     
@@ -29,12 +29,14 @@ public class HashTable {
     }
     
     public TrackingDevice get(int id) {
+        searchingLoops = 0;
         int pos = hashId(id);
         
         if(devices[pos] == null) return null;
         
         for(TrackingDevice t : devices[pos]) {
             searchingLoops++;
+            if(searchingLoops > maxLoops) maxLoops = searchingLoops;
             if(t.getId() == id) {
                 return t;
             }
@@ -61,7 +63,6 @@ public class HashTable {
         for(LinkedList<TrackingDevice> l : devices) {
             if(l == null) continue;
             for(TrackingDevice t : l ) {
-                getKeysLoops++;
                 keys[pos++] = t.getId();
             }
         }
